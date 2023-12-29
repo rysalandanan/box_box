@@ -15,6 +15,14 @@ public class PlayerScript : MonoBehaviour
     [Header("Death screen")]
     public GameObject deathScreen;
 
+    //Coyote time//
+    private float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
+
+    //Jump buffer//
+    private float jumpBufferTime = 0.2f;
+    private float jumpBufferCounter;
+
     [SerializeField] private LayerMask canJump;
     void Start()
     {
@@ -35,9 +43,31 @@ public class PlayerScript : MonoBehaviour
     }
     private void PlayerJump()
     {
-        if (Input.GetKey(KeyCode.UpArrow) && isGrounded())
+        if (isGrounded())
         {
-            _rb2D.velocity = new Vector2(_rb2D.velocity.x, playerJumpPower);
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            jumpBufferCounter = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
+        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
+        {
+            _rb2D.velocity = new Vector2(_rb2D.velocity.x,playerJumpPower);
+            jumpBufferCounter = 0f;
+        }
+        if (Input.GetButtonUp("Jump") && _rb2D.velocity.y > 0f)
+        {
+            _rb2D.velocity = new Vector2(_rb2D.velocity.x, _rb2D.velocity.y * 0.5f);
+            coyoteTimeCounter = 0f;
         }
     }
     private bool isGrounded()
