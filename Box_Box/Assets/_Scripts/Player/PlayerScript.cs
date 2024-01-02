@@ -1,3 +1,5 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
@@ -6,9 +8,15 @@ public class PlayerScript : MonoBehaviour
     public float playerSpeed;
     public float playerJumpPower;
 
+    [Header("Player Temperature")]
+    public TextMeshProUGUI tempText;
+    public float Temp;
+    public float TempIncreaseRate;
+    public float TempDecreaseRate;
+    private float OriginalTemp;
+
     private Rigidbody2D _rb2D;
     private BoxCollider2D _bc2D;
-    private TrailRenderer _tr;
 
     private Vector2 RespawnPoint;
 
@@ -23,19 +31,23 @@ public class PlayerScript : MonoBehaviour
     private float jumpBufferTime = 0.2f;
     private float jumpBufferCounter;
 
+    //Player hit//
+    private SpriteRenderer _spriteRenderer;
     [SerializeField] private LayerMask canJump;
     void Start()
     {
         _rb2D = GetComponent<Rigidbody2D>();
         _bc2D = GetComponent<BoxCollider2D>();
-        _tr = GameObject.Find("Trail").GetComponent<TrailRenderer>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         RespawnPoint = transform.position;
+        OriginalTemp = Temp;
     }
     void Update()
     {
         PlayerMovement();
         PlayerJump();
         PlayerRespawn();
+        PlayerTemperature();
     }
     private void PlayerMovement()
     {
@@ -81,15 +93,37 @@ public class PlayerScript : MonoBehaviour
         {
             deathScreen.SetActive(true);
         }
+        if(collision.gameObject.CompareTag("Obstacle"))
+        {
+            StartCoroutine(PlayerHit());
+        }
     }
     private void PlayerRespawn()
     {
         if(deathScreen.activeInHierarchy && Input.anyKey)
         {
-            _tr.emitting = false;
+            Temp = OriginalTemp;
             transform.position = RespawnPoint;
             deathScreen.SetActive(false);
-            _tr.emitting = true;
         }
+    }
+    private void PlayerTemperature()
+    {
+        if (isGrounded())
+        {
+            Temp = Temp + TempIncreaseRate * Time.deltaTime;
+        }
+        else
+        {
+            Temp = Temp - TempDecreaseRate * Time.deltaTime;
+        }
+        Temp = Temp / 100 * 100;
+        tempText.text = "Temperature: " + string.Format("{0:#.00} %", Temp);
+    }
+    private IEnumerator PlayerHit()
+    {
+        _spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.15f);
+        _spriteRenderer.color = new Color(255, 255, 255);
     }
 }
