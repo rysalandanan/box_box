@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Fall_Detector
   - Respawn_Point
+  - Obstacle
+  - Jump_Pad
   layers:
   - Default
   - TransparentFX

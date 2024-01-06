@@ -7,6 +7,7 @@ public class PlayerScript : MonoBehaviour
     [Header("Player settings")]
     public float playerSpeed;
     public float playerJumpPower;
+    public float playerSpeedLimit;
 
     [Header("Player Temperature")]
     public TextMeshProUGUI tempText;
@@ -22,6 +23,9 @@ public class PlayerScript : MonoBehaviour
 
     [Header("Death screen")]
     public GameObject deathScreen;
+    [Header("Obstacle Damage")]
+    public float obsDamage;
+    
 
     //Coyote time//
     private float coyoteTime = 0.2f;
@@ -51,7 +55,11 @@ public class PlayerScript : MonoBehaviour
     }
     private void PlayerMovement()
     {
-        transform.position += transform.right * playerSpeed * Time.deltaTime;
+        //transform.position += transform.right * playerSpeed * Time.deltaTime;
+        if(_rb2D.velocity.x <= playerSpeedLimit)
+        {
+            _rb2D.AddForce(transform.right * playerSpeed * Time.deltaTime);
+        }
     }
     private void PlayerJump()
     {
@@ -96,6 +104,12 @@ public class PlayerScript : MonoBehaviour
         if(collision.gameObject.CompareTag("Obstacle"))
         {
             StartCoroutine(PlayerHit());
+            Temp = Temp + obsDamage;
+        }
+        if (collision.gameObject.CompareTag("Jump_Pad"))
+        {
+            //_rb2D.velocity = new Vector2(_rb2D.velocity.x, playerJumpPower * 2);
+            StartCoroutine(UseJumpPad());
         }
     }
     private void PlayerRespawn()
@@ -119,11 +133,17 @@ public class PlayerScript : MonoBehaviour
         }
         Temp = Temp / 100 * 100;
         tempText.text = "Temperature: " + string.Format("{0:#.00} %", Temp);
+        tempText.color = Color.green;
     }
     private IEnumerator PlayerHit()
     {
         _spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.15f);
-        _spriteRenderer.color = new Color(255, 255, 255);
+        _spriteRenderer.color = Color.white;
+    }
+    private IEnumerator UseJumpPad()
+    {
+        yield return new WaitForSeconds(0.15f);
+        _rb2D.velocity = new Vector2(_rb2D.velocity.x, playerJumpPower * 5);
     }
 }
