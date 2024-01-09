@@ -8,6 +8,7 @@ TagManager:
   - Respawn_Point
   - Obstacle
   - Jump_Pad
+  - Fan_Pad
   layers:
   - Default
   - TransparentFX

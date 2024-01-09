@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
@@ -9,23 +8,8 @@ public class PlayerScript : MonoBehaviour
     public float playerJumpPower;
     public float playerSpeedLimit;
 
-    [Header("Player Temperature")]
-    public TextMeshProUGUI tempText;
-    public float Temp;
-    public float TempIncreaseRate;
-    public float TempDecreaseRate;
-    private float OriginalTemp;
-
-    private Rigidbody2D _rb2D;
+    public Rigidbody2D _rb2D;
     private BoxCollider2D _bc2D;
-
-    private Vector2 RespawnPoint;
-
-    [Header("Death screen")]
-    public GameObject deathScreen;
-    [Header("Obstacle Damage")]
-    public float obsDamage;
-    
 
     //Coyote time//
     private float coyoteTime = 0.2f;
@@ -35,28 +19,21 @@ public class PlayerScript : MonoBehaviour
     private float jumpBufferTime = 0.2f;
     private float jumpBufferCounter;
 
-    //Player hit//
-    private SpriteRenderer _spriteRenderer;
+    //Ground check//
     [SerializeField] private LayerMask canJump;
     void Start()
     {
         _rb2D = GetComponent<Rigidbody2D>();
         _bc2D = GetComponent<BoxCollider2D>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        RespawnPoint = transform.position;
-        OriginalTemp = Temp;
     }
     void Update()
     {
         PlayerMovement();
         PlayerJump();
-        PlayerRespawn();
-        PlayerTemperature();
     }
     private void PlayerMovement()
     {
-        //transform.position += transform.right * playerSpeed * Time.deltaTime;
-        if(_rb2D.velocity.x <= playerSpeedLimit)
+        if (_rb2D.velocity.x <= playerSpeedLimit)
         {
             _rb2D.AddForce(transform.right * playerSpeed * Time.deltaTime);
         }
@@ -81,7 +58,7 @@ public class PlayerScript : MonoBehaviour
         }
         if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
         {
-            _rb2D.velocity = new Vector2(_rb2D.velocity.x,playerJumpPower);
+            _rb2D.velocity = new Vector2(_rb2D.velocity.x, playerJumpPower);
             jumpBufferCounter = 0f;
         }
         if (Input.GetButtonUp("Jump") && _rb2D.velocity.y > 0f)
@@ -90,56 +67,21 @@ public class PlayerScript : MonoBehaviour
             coyoteTimeCounter = 0f;
         }
     }
-    private bool isGrounded()
+    public bool isGrounded()
     {
         var bounds = _bc2D.bounds;
         return Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, 0.2f, canJump);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.CompareTag("Fall_Detector"))
-        {
-            deathScreen.SetActive(true);
-        }
-        if(collision.gameObject.CompareTag("Obstacle"))
-        {
-            StartCoroutine(PlayerHit());
-            Temp = Temp + obsDamage;
-        }
         if (collision.gameObject.CompareTag("Jump_Pad"))
         {
-            //_rb2D.velocity = new Vector2(_rb2D.velocity.x, playerJumpPower * 2);
             StartCoroutine(UseJumpPad());
         }
-    }
-    private void PlayerRespawn()
-    {
-        if(deathScreen.activeInHierarchy && Input.anyKey)
+        if(collision.gameObject.CompareTag("Fan_Pad"))
         {
-            Temp = OriginalTemp;
-            transform.position = RespawnPoint;
-            deathScreen.SetActive(false);
+            _rb2D.velocity = new Vector2(playerJumpPower * 5, _rb2D.velocity.x);
         }
-    }
-    private void PlayerTemperature()
-    {
-        if (isGrounded())
-        {
-            Temp = Temp + TempIncreaseRate * Time.deltaTime;
-        }
-        else
-        {
-            Temp = Temp - TempDecreaseRate * Time.deltaTime;
-        }
-        Temp = Temp / 100 * 100;
-        tempText.text = "Temperature: " + string.Format("{0:#.00} %", Temp);
-        tempText.color = Color.green;
-    }
-    private IEnumerator PlayerHit()
-    {
-        _spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(0.15f);
-        _spriteRenderer.color = Color.white;
     }
     private IEnumerator UseJumpPad()
     {
