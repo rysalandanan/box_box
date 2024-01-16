@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class PauseWhenActive : MonoBehaviour
 {
-
-    
     private void OnEnable()
     {
         Time.timeScale = 0f;

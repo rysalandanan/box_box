@@ -88,4 +88,8 @@ public class PlayerScript : MonoBehaviour
         yield return new WaitForSeconds(0.15f);
         _rb2D.velocity = new Vector2(_rb2D.velocity.x, playerJumpPower * 5);
     }
+    public void PlayerSpeedReset()
+    {
+        _rb2D.velocity = new Vector2(0f, 0f);
+    }
 }

@@ -5,6 +5,9 @@ public class PlayerRespawn : MonoBehaviour
     [Header("Reference Script: Player Temperature")]
     public PlayerTemperature playerTemperature;
 
+    [Header("Reference Script: Player Script")]
+    public PlayerScript playerScript;
+
     private Vector2 respawnPoint;
 
     [Header("Death screen")]
@@ -30,9 +33,10 @@ public class PlayerRespawn : MonoBehaviour
     }
     private void Respawn()
     {
-        if (_deathScreen.activeInHierarchy && Input.GetKey(KeyCode.Space))
+        if (_deathScreen.activeInHierarchy && Input.anyKey)
         {
             transform.position = respawnPoint;
+            playerScript.PlayerSpeedReset();
             playerTemperature.Temp = playerTemperature.OriginalTemp;
             _deathScreen.SetActive(false);
         }
