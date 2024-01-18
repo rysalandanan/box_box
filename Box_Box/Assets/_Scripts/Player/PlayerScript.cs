@@ -92,4 +92,5 @@ public class PlayerScript : MonoBehaviour
     {
         _rb2D.velocity = new Vector2(0f, 0f);
     }
+    //test//
 }
