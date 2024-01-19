@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1127666029203653354}
   - component: {fileID: 2121789679501106060}
   - component: {fileID: 8892684488157431352}
+  - component: {fileID: 2539082601404957760}
   m_Layer: 0
   m_Name: Jump-pad (Vertical)
   m_TagString: Jump_Pad
@@ -163,5 +164,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5ba47bbde47ea340b2ad33d2bd77a7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2539082601404957760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6805553471018056077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5081e86e3ae01241a6df3704ca652c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

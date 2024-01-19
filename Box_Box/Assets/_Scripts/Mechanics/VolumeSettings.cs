@@ -3,50 +3,49 @@ using UnityEngine.UI;
 
 public class VolumeSettings : MonoBehaviour
 {
-    public Slider slider;
-    public AudioSource audioSource;
-    public Button volButton;
+    public Slider Slider;
+    public AudioSource AudioSource;
+    public Button ButtonImage;
     public Sprite[] VolumeImage;
     private float originalVol;
 
     private void Start()
     {
-        slider.value = 1f;
-        volButton.GetComponent<Button>();
+        AudioSource.volume = Slider.value;
+        ButtonImage.GetComponent<Button>();
     }
     public void VolumeChange()
     {
-        audioSource.volume = slider.value;
-        if (slider.value >= 0.001f)
+        AudioSource.volume = Slider.value;
+        if (Slider.value >= 0.001f)
         {
-            volButton.GetComponent<Image>().sprite = VolumeImage[1];
+            ButtonImage.GetComponent<Image>().sprite = VolumeImage[1];
         }
         else
         {
-            volButton.GetComponent<Image>().sprite = VolumeImage[0];
+            ButtonImage.GetComponent<Image>().sprite = VolumeImage[0];
         }
     }
     public void MuteandUnmuteButton()
     {
-        if(slider.value >= 0.001f)
+        if(Slider.value >= 0.001f)
         {
-            //mute
-            originalVol = slider.value;
-            slider.value = 0f;
-            volButton.GetComponent<Image>().sprite = VolumeImage[0];
+            originalVol = Slider.value;
+            Slider.value = 0f;
+            ButtonImage.GetComponent<Image>().sprite = VolumeImage[0];
         }
         else
         {
-            slider.value = originalVol;
-            volButton.GetComponent<Image>().sprite = VolumeImage[1];
+            Slider.value = originalVol;
+            ButtonImage.GetComponent<Image>().sprite = VolumeImage[1];
         }
     }
     public void VolumeUp()
     {
-        slider.value += 0.05f;
+        Slider.value += 0.05f;
     }
     public void VolumeDown()
     {
-        slider.value -= 0.05f;
+        Slider.value -= 0.05f;
     }
 }

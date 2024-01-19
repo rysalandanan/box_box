@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Fall_Detector : MonoBehaviour
 {
-    public Transform targetObject;
+    public Transform TargetObject;
 
     private void Update()
     {
-        transform.position = new Vector2 (targetObject.transform.position.x, transform.position.y);
+        transform.position = new Vector2 (TargetObject.transform.position.x, transform.position.y);
     }
 }

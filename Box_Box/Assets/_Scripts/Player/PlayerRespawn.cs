@@ -3,22 +3,22 @@ using UnityEngine;
 public class PlayerRespawn : MonoBehaviour
 {
     [Header("Reference Script: Player Temperature")]
-    public PlayerTemperature playerTemperature;
+    public PlayerTemperature PlayerTemperature;
 
     [Header("Reference Script: Player Script")]
-    public PlayerScript playerScript;
+    public PlayerMovement PlayerMovement;
 
-    private Vector2 respawnPoint;
+    private Vector2 _respawnPoint;
 
     [Header("Death screen")]
     public GameObject _deathScreen;
     void Start()
     {
-        respawnPoint = transform.position;
+        _respawnPoint = transform.position;
     }
     private void Update()
     {
-        if(playerTemperature.Temp >=100)
+        if(PlayerTemperature.PlayerTemp >=100)
         {
             _deathScreen.SetActive(true);
         }
@@ -35,9 +35,9 @@ public class PlayerRespawn : MonoBehaviour
     {
         if (_deathScreen.activeInHierarchy && Input.anyKey)
         {
-            transform.position = respawnPoint;
-            playerScript.PlayerSpeedReset();
-            playerTemperature.Temp = playerTemperature.OriginalTemp;
+            transform.position = _respawnPoint;
+            PlayerMovement.Rb2D.velocity = Vector2.zero;
+            PlayerTemperature.PlayerTemp = PlayerTemperature.DefaultPlayerTemperature;
             _deathScreen.SetActive(false);
         }
     }

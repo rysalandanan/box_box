@@ -3,26 +3,26 @@ using UnityEngine;
 
 public class PauseScript : MonoBehaviour
 {
-    public GameObject pauseMenu;
-    public GameObject deathScreen;
-    public GameObject settingsMenu;
-    private Animator animator;
+    public GameObject PauseMenu;
+    public GameObject DeathScreen;
+    public GameObject SettingsMenu;
+    private Animator _animator;
     private void Start()
     {
-        animator = transform.Find("Pause Menu").GetComponent<Animator>();
+        _animator = PauseMenu.GetComponent<Animator>(); 
     }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && !pauseMenu.activeInHierarchy)
+        if(Input.GetKeyDown(KeyCode.Escape) && !PauseMenu.activeInHierarchy)
         {
-            if(!deathScreen.activeInHierarchy)
+            if(!DeathScreen.activeInHierarchy)
             {
                 PauseGame();
             }
         }
-        else if(Input.GetKeyDown(KeyCode.Escape) && pauseMenu.activeInHierarchy)
+        else if(Input.GetKeyDown(KeyCode.Escape) && PauseMenu.activeInHierarchy)
         {
-            if (settingsMenu.activeInHierarchy)
+            if (SettingsMenu.activeInHierarchy)
             {
                 CloseSettings();
             }
@@ -34,28 +34,28 @@ public class PauseScript : MonoBehaviour
     }
     private void PauseGame()
     {
-        pauseMenu.SetActive(true);
-        animator.SetTrigger("Open");
+        PauseMenu.SetActive(true);
+        _animator.SetTrigger("Open");
     }
     public void UnpauseGame()
     {
-        animator.SetTrigger("Close");
-        animator.ResetTrigger("Open");
+        _animator.SetTrigger("Close");
+        _animator.ResetTrigger("Open");
         StartCoroutine(ClosePauseMenu());
     }
     private IEnumerator ClosePauseMenu()
     {
-        animator.SetTrigger("Close");
+        _animator.SetTrigger("Close");
         yield return new WaitForSecondsRealtime(0.5f);
-        animator.ResetTrigger("Close");
-        pauseMenu.SetActive(false);
+        _animator.ResetTrigger("Close");
+        PauseMenu.SetActive(false);
     }
     public void OpenSettings()
     {
-        settingsMenu.SetActive(true);
+        SettingsMenu.SetActive(true);
     }
     public void CloseSettings()
     {
-        settingsMenu.SetActive(false);
+        SettingsMenu.SetActive(false);
     }
 }

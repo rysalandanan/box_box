@@ -5,40 +5,41 @@ using UnityEngine;
 public class PlayerTemperature : MonoBehaviour
 {
     [Header("Reference script: PlayerScript")]
-    public PlayerScript playerScript;
+    public PlayerMovement PlayerScript;
     [Header("Player Temperature Settings")]
-    public TextMeshProUGUI tempText;
-    public float Temp;
-    [SerializeField] private float TempIncreaseRate;
-    [SerializeField] private float TempDecreaseRate;
-    [SerializeField] private float ObstacleDamage;
-    public float OriginalTemp;
+    public TextMeshProUGUI TemperatureUIText;
+    [SerializeField] public float PlayerTemp;
+  
+    public float TemperatureIncreaseRate;
+    public float TemperatureDecreaseRate;
+    public float TemperatureDamage;
+    [HideInInspector] public float DefaultPlayerTemperature;
     private SpriteRenderer spriteRenderer;
 
     private void Start()
     {
-        OriginalTemp = Temp;
+        DefaultPlayerTemperature = PlayerTemp;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
     private void Update()
     {
-        if(playerScript.isGrounded() && playerScript._rb2D.velocity.x >= 0.01f)
+        if(PlayerScript.isGrounded() && PlayerScript.Rb2D.velocity.x >= 0.01f)
         {
-            Temp = Temp + TempIncreaseRate * Time.deltaTime;
+            PlayerTemp += TemperatureIncreaseRate * Time.deltaTime;
         }
         else
         {
-            Temp = Temp - TempDecreaseRate * Time.deltaTime;
+            PlayerTemp -= TemperatureDecreaseRate * Time.deltaTime;
         }
-        Temp = Temp / 100 * 100;
-        tempText.text = "Temperature: " + string.Format("{0:#.00} %", Temp);
-        tempText.color = Color.green;
+        PlayerTemp = PlayerTemp / 100 * 100;
+        TemperatureUIText.text = "Temperature: " + string.Format("{0:#.00} %", PlayerTemp);
+        TemperatureUIText.color = Color.green;
     }
     private void  OnTriggerEnter2D (Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Obstacle"))
         {
-            Temp = Temp + ObstacleDamage;
+            PlayerTemp = PlayerTemp + TemperatureDamage;
             StartCoroutine(PlayerHit());
         }
     }
