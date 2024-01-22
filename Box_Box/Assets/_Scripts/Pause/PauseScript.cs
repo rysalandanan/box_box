@@ -7,6 +7,10 @@ public class PauseScript : MonoBehaviour
     public GameObject DeathScreen;
     public GameObject SettingsMenu;
     private Animator _animator;
+    [SerializeField] private AudioSource _openPauseMenuSFX;
+    [SerializeField] private AudioSource _closePauseMenuSFX;
+    [SerializeField] private AudioSource _openSettingsMenuSFX;
+    [SerializeField] private AudioSource _closeSettingsMenuSFX;
     private void Start()
     {
         _animator = PauseMenu.GetComponent<Animator>(); 
@@ -34,11 +38,13 @@ public class PauseScript : MonoBehaviour
     }
     private void PauseGame()
     {
+        _openPauseMenuSFX.Play();
         PauseMenu.SetActive(true);
         _animator.SetTrigger("Open");
     }
     public void UnpauseGame()
     {
+        _closePauseMenuSFX.Play();
         _animator.SetTrigger("Close");
         _animator.ResetTrigger("Open");
         StartCoroutine(ClosePauseMenu());
@@ -52,10 +58,12 @@ public class PauseScript : MonoBehaviour
     }
     public void OpenSettings()
     {
+        _openSettingsMenuSFX.Play();
         SettingsMenu.SetActive(true);
     }
     public void CloseSettings()
     {
+        _closeSettingsMenuSFX.Play(); 
         SettingsMenu.SetActive(false);
     }
 }

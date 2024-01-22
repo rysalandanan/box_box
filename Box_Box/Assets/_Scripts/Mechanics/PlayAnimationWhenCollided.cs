@@ -12,7 +12,6 @@ public class PlayAnimationWhenCollided : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("sheesh");
             animator.Play("Jump-pad_Animation");
         }
     }

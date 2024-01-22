@@ -46,7 +46,7 @@ public class PlayerTemperature : MonoBehaviour
     private IEnumerator PlayerHit()
     {
         var OriginalColor = spriteRenderer.color;
-        spriteRenderer.color = Color.red;
+        spriteRenderer.color = Color.black;
         yield return new WaitForSeconds(0.15f);
         spriteRenderer.color = OriginalColor;
     }
