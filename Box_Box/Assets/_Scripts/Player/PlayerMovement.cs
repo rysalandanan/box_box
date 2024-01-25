@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _coyoteTimeCounter -= Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.W))
         {
             _jumpBufferCounter = _jumpBufferTime;
         }

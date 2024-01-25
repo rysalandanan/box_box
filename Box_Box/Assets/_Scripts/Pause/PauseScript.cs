@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseScript : MonoBehaviour
 {
@@ -17,14 +18,14 @@ public class PauseScript : MonoBehaviour
     }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && !PauseMenu.activeInHierarchy)
+        if(Input.GetKeyDown(KeyCode.P) && !PauseMenu.activeInHierarchy)
         {
             if(!DeathScreen.activeInHierarchy)
             {
                 PauseGame();
             }
         }
-        else if(Input.GetKeyDown(KeyCode.Escape) && PauseMenu.activeInHierarchy)
+        else if(Input.GetKeyDown(KeyCode.P) && PauseMenu.activeInHierarchy)
         {
             if (SettingsMenu.activeInHierarchy)
             {
@@ -36,7 +37,7 @@ public class PauseScript : MonoBehaviour
             }
         }
     }
-    private void PauseGame()
+    public void PauseGame()
     {
         _openPauseMenuSFX.Play();
         PauseMenu.SetActive(true);
@@ -65,5 +66,9 @@ public class PauseScript : MonoBehaviour
     {
         _closeSettingsMenuSFX.Play(); 
         SettingsMenu.SetActive(false);
+    }
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
